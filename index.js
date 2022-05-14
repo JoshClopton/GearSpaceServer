@@ -21,18 +21,24 @@ app.use(cors());
 app.use("/", loginRouter);
 app.use("/", authRouter);
 
-// app.use("/items", itemRoute);
-
-// passport.use(new LocalStrategy(
-// 	function(username, password, done) {
-// 	  User.findOne({ username: username }, function (err, user) {
-// 		if (err) { return done(err); }
-// 		if (!user) { return done(null, false); }
-// 		if (!user.verifyPassword(password)) { return done(null, false); }
-// 		return done(null, user);
-// 	  });
-// 	}
-//   ));
+//route setup described in step 4 of directions for google auth
+app.get(
+	"/auth/google",
+	passport.authenticate("google", {
+		scope: ["profile", "email"],
+		session: false,
+	})
+);
+app.get(
+	"/auth/google/redirect",
+	passport.authenticate("google", {
+		session: false,
+		failureRedirect: `https://localhost:3000/login`,
+	}),
+	(req, res) => {
+		res.redirect(req.user); //req.user has the redirection_url
+	}
+);
 
 app.listen(PORT, () => {
 	console.log(`🚀 Server running on port ${PORT}`);
