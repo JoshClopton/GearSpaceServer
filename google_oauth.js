@@ -6,8 +6,8 @@ passport.use(
 	new GoogleStrategy(
 		{
 			callbackURL: `http://localhost:5500/auth/google/redirect`, //same URI as registered in Google console portal
-			clientID: process.env.GOOGLE_CLIENT_ID, //replace with copied value from Google console
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+			clientID: process.env.369197942946-8sth33vd4f2mgvmmn44212a7didqikf9.apps.googleusercontent.com, //replace with copied value from Google console
+			clientSecret: process.env.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,
 		},
 
 		//accessToken are used to make API requests on behalf of a user. Not required in our app.
