@@ -29,6 +29,8 @@ app.get(
 	}
 );
 
+//!!!Protected endpoint
+
 // User profile endpoint that requires authentication
 router.get("/profile", (req, res) => {
 	// Passport stores authenticated user information on `req.user` object.
@@ -43,6 +45,8 @@ router.get("/profile", (req, res) => {
 });
 
 // Create a logout endpoint
+
+// /auth/logout
 router.get("/logout", (req, res) => {
 	// Passport adds the logout method to request, it will end user session
 	req.logout();
