@@ -4,6 +4,10 @@ const authRoutes = require("./routes/auth");
 
 const express = require("express");
 
+// test code
+const auth2 = require("./routes/auth2");
+// stop
+
 // Middleware for creating a session id on server and a session cookie on client
 const expressSession = require("express-session");
 
