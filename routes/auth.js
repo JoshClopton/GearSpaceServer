@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+module.exports = router;
 
 const passport = require("passport");
 
@@ -23,9 +24,10 @@ router.get(
 	"/auth/google/redirect",
 	passport.authenticate("google", {
 		session: false,
-		failureRedirect: `https://localhost:3000/login`,
+		failureRedirect: `http://localhost:3000/login`,
 	}),
 	(req, res) => {
+		console.log(">>>>wtf");
 		res.redirect(req.user); //req.user has the redirection_url
 	}
 );
@@ -59,14 +61,3 @@ router.get("/logout", (req, res) => {
 router.get("/login/", function (req, res, next) {
 	res.render("login");
 });
-
-//TODO: remove this this testing router
-router.get("/success-callback", (req, res) => {
-	if (req.user) {
-		res.status(200).json(req.user);
-	} else {
-		res.status(401).json({ message: "User is not logged in" });
-	}
-});
-
-module.exports = router;

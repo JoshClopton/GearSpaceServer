@@ -1,38 +1,24 @@
 //this is the index js file i'm creating that goes along with the codealong. Gonna try to compare this to the index.js and delet one of the files
-
-const authRoutes = require("./routes/auth");
-
+// Create Express app and also allow for app PORT to be optionally specified by an environment variable
 const express = require("express");
-
-// test code
-const auth2 = require("./routes/auth2");
-// stop
-
 // Middleware for creating a session id on server and a session cookie on client
 const expressSession = require("express-session");
-
 // cors package prevents CORS errors when using client side API calls
 const cors = require("cors");
-
 // Add http headers, small layer of security
 const helmet = require("helmet");
-
-// Passport library and Github Strategy
+// Passport library and Google Strategy
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
 // Knex instance
 const knex = require("knex")(require("./knexfile.js").development);
 
-// Create Express app and also allow for app PORT to be optionally specified by an environment variable
+// // Create Express app and also allow for app PORT to be optionally specified by an environment variable
 const app = express();
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 8000;
 
 // Require .env files for environment variables (keys and secrets)
 require("dotenv").config();
-
-//set up auth end point and point to the routes folder
-app.use("/auth", authRoutes);
 
 // Enable req.body middleware
 app.use(express.json());
@@ -151,6 +137,11 @@ passport.deserializeUser((userId, done) => {
 // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 
 // =========================================
+
+const authRoutes = require("./routes/auth");
+
+//set up auth end point and point to the routes folder
+app.use("/auth", authRoutes);
 
 app.listen(PORT, () => {
 	console.log(`🚀 Server running on port ${PORT}`);
