@@ -31,6 +31,8 @@ app.use(
 	cors({
 		origin: true,
 		credentials: true,
+		methods: "GET, HEAD, PUT, PATCH, POST, OPTION, DELETE",
+		preflightContinue: true,
 	})
 );
 
@@ -73,7 +75,7 @@ passport.use(
 			// First let's check if we already have this user in our DB
 			knex("users")
 				.select("id")
-				.where({ github_id: profile.id })
+				.where({ id: profile.id })
 				.then((user) => {
 					if (user.length) {
 						// If user is found, pass the user object to serialize function
@@ -83,9 +85,9 @@ passport.use(
 						knex("users")
 							.insert({
 								//TODO: will need to change this to google?
-								github_id: profile.id,
-								avatar_url: profile._json.avatar_url,
-								username: profile.username,
+								// github_id: profile.id,
+								// avatar_url: profile._json.avatar_url,
+								name: profile.displayName,
 							})
 							.then((userId) => {
 								// Pass the user object to serialize function
