@@ -17,6 +17,10 @@ const knex = require("knex")(require("./knexfile.js").development);
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+//routes
+const shelvesRoutes = require("./routes/shelvesRoutes");
+const authRoutes = require("./routes/authRoutes");
+
 // Require .env files for environment variables (keys and secrets)
 require("dotenv").config();
 
@@ -140,7 +144,8 @@ passport.deserializeUser((userId, done) => {
 
 // =========================================
 
-const authRoutes = require("./routes/auth");
+//set up shelves end point and point to the routes folder
+app.use("/", shelvesRoutes);
 
 //set up auth end point and point to the routes folder
 app.use("/auth", authRoutes);

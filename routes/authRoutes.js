@@ -63,15 +63,6 @@ router.get("/login/", function (req, res, next) {
 	res.render("login");
 });
 
-//testing the callback, delete this after test
-router.get("/success-callback", (req, res) => {
-	if (req.user) {
-		res.status(200).json(req.user);
-	} else {
-		res.status(401).json({ message: "User is not logged in" });
-	}
-});
-
 //end test
 
 module.exports = router;
