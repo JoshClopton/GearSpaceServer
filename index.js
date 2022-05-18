@@ -13,13 +13,15 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 // Knex instance
 const knex = require("knex")(require("./knexfile.js").development);
 
+const cookieParser = require("cookie-parser");
+
 // // Create Express app and also allow for app PORT to be optionally specified by an environment variable
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 //routes
-const shelvesRoutes = require("./routes/shelvesRoutes");
-const authRoutes = require("./routes/authRoutes");
+// const shelvesRoutes = require("./routes/shelvesRoutes");
+const auth = require("./routes/auth");
 
 // Require .env files for environment variables (keys and secrets)
 require("dotenv").config();
@@ -29,6 +31,8 @@ app.use(express.json());
 
 // Initialize HTTP Headers middleware
 app.use(helmet());
+
+app.use(cookieParser());
 
 // Enable CORS (with additional config options required for cookies)
 app.use(
@@ -145,10 +149,12 @@ passport.deserializeUser((userId, done) => {
 // =========================================
 
 //set up shelves end point and point to the routes folder
-app.use("/", shelvesRoutes);
+// app.use("/", shelvesRoutes);
 
+//set up
+// app.use("/:shelfId", shelvesRoutes);
 //set up auth end point and point to the routes folder
-app.use("/auth", authRoutes);
+app.use("/auth", auth);
 
 app.listen(PORT, () => {
 	console.log(`🚀 Server running on port ${PORT}`);

@@ -11,40 +11,47 @@ exports.up = function (knex) {
 				table.binary("image");
 				table.timestamp("updated_at").defaultTo(knex.fn.now());
 			})
-			//This will be the shelves that displays on the home page load.
+			// //This will be the shelves that displays on the home page load.
+			// .createTable("shelves", (table) => {
+			// 	//do I need an ID for shelves? Does it need to be notNullable?
+			// 	table.increments("shelf_id").primary();
+			// 	table.string("shelf").notNullable();
+			// 	//TODO: need to add the foreign id's
+			// 	table.binary("image");
+			// })
 			.createTable("shelves", (table) => {
-				//do I need an ID for shelves? Does it need to be notNullable?
-				table.increments("shelf_id").primary();
-				table.string("shelf").notNullable();
-				//TODO: need to add the foreign id's
-				table.binary("image");
-			})
-			.createTable("user_shelves", (table) => {
 				table.incremennts("id").primary();
+				//TODO: what is unsigned?
+				table.integer("user_id").unsigned().notNullable();
 				table.string("item").notNullable();
-				table.number("Qty");
+				//TODO: Should this be choice?
+				table.string("shelf");
+				table.integer("qty");
 				table.string("location");
 				table.string("description");
 				table.string("notes");
 				table.binary("image");
-				table.string("comments");
-				table.integer("commenter_id");
-			})
-			.createTable("posts", (table) => {
-				table.increments("id").primary();
-				table.integer("user_id").unsigned().notNullable();
-				table.string("title", 75).notNullable();
-				table.text("content").notNullable();
-				table.timestamp("updated_at").defaultTo(knex.fn.now());
-				//the next info is setting up relationship to users table
+				table.integer("comment_id");
 				table
-					//this is a foreign id for the users table
 					.foreign("user_id")
-					//this is saying to reference id in the users table
 					.references("id")
-					//here it is declaring the users table
 					.inTable("users")
 					.onUpdate("CASCADE")
+					.onDelete("CASCADE");
+				table.foreign("comment_id").references("id").inTable("comments");
+				onDelete("CASCADE");
+			})
+			.createTable("comments", (table) => {
+				table.increments("id").primary();
+				table.integer("commenter_id").unsigned().notNullable();
+				table.timestamp("created_at").defaultTo(knex.fn.now());
+				//TODO: what is diff between string and text
+				table.string("comment").notNullable();
+
+				table
+					.foreign("commenter_id")
+					.references("id")
+					.inTable("users")
 					.onDelete("CASCADE");
 			})
 	);
