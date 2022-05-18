@@ -22,6 +22,7 @@ const PORT = process.env.PORT || 8000;
 //routes
 // const shelvesRoutes = require("./routes/shelvesRoutes");
 const auth = require("./routes/auth");
+const shelves = require("./routes/shelvesRoutes");
 
 // Require .env files for environment variables (keys and secrets)
 require("dotenv").config();
@@ -49,7 +50,7 @@ app.use(
 	expressSession({
 		secret: process.env.SESSION_SECRET,
 		resave: false,
-		saveUninitialized: true,
+		saveUninitialized: false,
 	})
 );
 
@@ -73,6 +74,9 @@ passport.use(
 			clientID: process.env.GOOGLE_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 			callbackURL: process.env.GOOGLE_CALLBACK_URL,
+			scope: ["profile"],
+			// passReqToCallback: true,
+			// userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
 		},
 		//Second argument is a callback function
 		(_accessToken, _refreshToken, profile, done) => {
@@ -87,7 +91,9 @@ passport.use(
 				.then((user) => {
 					if (user.length) {
 						// If user is found, pass the user object to serialize function
-						done(null, user[0]);
+						console.log("🕵🏻‍♂️ user found: "); //TODO: remove/comment
+
+						return done(null, user[0]);
 					} else {
 						// If user isn't found, we create a record
 						knex("users")
@@ -102,7 +108,9 @@ passport.use(
 							})
 							.then((userId) => {
 								// Pass the user object to serialize function
-								done(null, { id: userId[0] });
+								console.log("🕵🏻‍♂️ user created: "); //TODO: remove/comment
+
+								return done(null, { id: userId[0] });
 							})
 							.catch((err) => {
 								console.log("Error creating a user", err);
@@ -158,6 +166,7 @@ passport.deserializeUser((userId, done) => {
 // app.use("/:shelfId", shelvesRoutes);
 //set up auth end point and point to the routes folder
 app.use("/auth", auth);
+app.use("/shelves", shelves);
 
 app.listen(PORT, () => {
 	console.log(`🚀 Server running on port ${PORT}`);

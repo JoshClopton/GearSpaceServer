@@ -13,7 +13,7 @@ router.get(
 	passport.authenticate("google", {
 		scope: ["profile", "email"],
 		//TODO: may need to change this to false or true
-		session: false,
+		// session: false,
 	})
 );
 
@@ -22,7 +22,7 @@ router.get(
 router.get(
 	"/google/redirect",
 	passport.authenticate("google", {
-		session: false,
+		// session: false,
 		failureRedirect: `${process.env.CLIENT_URL}/auth-fail`,
 	}),
 	(req, res) => {
