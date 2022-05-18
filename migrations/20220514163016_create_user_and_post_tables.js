@@ -20,9 +20,8 @@ exports.up = function (knex) {
 			// 	table.binary("image");
 			// })
 			.createTable("shelves", (table) => {
-				table.incremennts("id").primary();
-				//TODO: what is unsigned?
-				table.integer("user_id").unsigned().notNullable();
+				table.increments("id").primary();
+				table.integer("user").notNullable();
 				table.string("item").notNullable();
 				//TODO: Should this be choice?
 				table.string("shelf");
@@ -32,14 +31,9 @@ exports.up = function (knex) {
 				table.string("notes");
 				table.binary("image");
 				table.integer("comment_id");
-				table
-					.foreign("user_id")
-					.references("id")
-					.inTable("users")
-					.onUpdate("CASCADE")
-					.onDelete("CASCADE");
-				table.foreign("comment_id").references("id").inTable("comments");
-				onDelete("CASCADE");
+
+				// table.foreign("user").references("id").inTable("users");
+				// table.foreign("comment_id").references("id").inTable("comments");
 			})
 			.createTable("comments", (table) => {
 				table.increments("id").primary();
@@ -48,15 +42,11 @@ exports.up = function (knex) {
 				//TODO: what is diff between string and text
 				table.string("comment").notNullable();
 
-				table
-					.foreign("commenter_id")
-					.references("id")
-					.inTable("users")
-					.onDelete("CASCADE");
+				// table.foreign("commenter_id").references("id").inTable("users");
 			})
 	);
 };
 
 exports.down = function (knex) {
-	return knex.schema.dropTable("posts").dropTable("users");
+	return knex.schema.dropTable("comments").dropTable("users");
 };

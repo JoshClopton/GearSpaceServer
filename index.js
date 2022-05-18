@@ -95,7 +95,10 @@ passport.use(
 								//TODO: will need to change this to google?
 								// github_id: profile.id,
 								// avatar_url: profile._json.avatar_url,
-								name: profile.displayName,
+								first_name: profile.name.givenName,
+								last_name: profile.name.familyName,
+								//TODO: take this out and adjust in database
+								is_public: false,
 							})
 							.then((userId) => {
 								// Pass the user object to serialize function
