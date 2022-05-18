@@ -21,7 +21,7 @@ exports.up = function (knex) {
 			// })
 			.createTable("shelves", (table) => {
 				table.increments("id").primary();
-				table.integer("user").notNullable();
+				table.integer("user").unsigned().notNullable();
 				table.string("item").notNullable();
 				//TODO: Should this be choice?
 				table.string("shelf");
@@ -30,23 +30,26 @@ exports.up = function (knex) {
 				table.string("description");
 				table.string("notes");
 				table.binary("image");
-				table.integer("comment_id");
 
-				// table.foreign("user").references("id").inTable("users");
-				// table.foreign("comment_id").references("id").inTable("comments");
+				table.foreign("user").references("id").inTable("users");
 			})
 			.createTable("comments", (table) => {
 				table.increments("id").primary();
+				table.integer("shelf_id").unsigned().notNullable();
+
 				table.integer("commenter_id").unsigned().notNullable();
 				table.timestamp("created_at").defaultTo(knex.fn.now());
 				//TODO: what is diff between string and text
 				table.string("comment").notNullable();
-
-				// table.foreign("commenter_id").references("id").inTable("users");
+				table.foreign("shelf_id").references("id").inTable("shelves");
+				table.foreign("commenter_id").references("id").inTable("users");
 			})
 	);
 };
 
 exports.down = function (knex) {
-	return knex.schema.dropTable("comments").dropTable("users");
+	return knex.schema
+		.dropTable("comments")
+		.dropTable("shelves")
+		.dropTable("users");
 };
