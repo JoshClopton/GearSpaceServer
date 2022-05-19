@@ -12,6 +12,8 @@ const knex = require("knex")(require("../knexfile.js").development);
 // module.exports = router;
 
 router.get("/", (req, res) => {
+	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
+
 	knex
 		.select("*")
 		.from("shelves")
@@ -25,6 +27,9 @@ router.get("/", (req, res) => {
 
 // Create a new post route
 router.post("/", (req, res) => {
+	console.log("🕵🏻‍♂️ POSTreq.user: ", req.user); //TODO: .remove/comment
+	console.log("🕵🏻‍♂️ req.body: ", req.body); //TODO: remove/comment
+
 	// If user is not logged in, we don't allow them to create a new post
 	if (req.user === undefined)
 		return res.status(401).json({ message: "Unauthorized" });
@@ -38,13 +43,17 @@ router.post("/", (req, res) => {
 	knex("shelves")
 		.insert({
 			user: req.user.id,
-			title: req.body.title,
-			content: req.body.content,
+			item: req.body.item,
+			description: req.body.description,
+			shelf: req.body.shelf,
+			qty: req.body.qty,
+			location: req.body.location,
+			notes: req.body.notes,
 		})
-		.then((postId) => {
-			// Send newly created postId as a response
-			res.status(201).json({ newPostId: postId[0] });
-		})
+		// .then((postId) => {
+		// 	// Send newly created postId as a response
+		// 	res.status(201).json({ newPostId: postId[0] });
+		// })
 		.catch(() => {
 			res.status(500).json({ message: "Error creating a new post" });
 		});
