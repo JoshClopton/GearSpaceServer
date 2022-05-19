@@ -87,7 +87,7 @@ passport.use(
 			// First let's check if we already have this user in our DB
 			knex("users")
 				.select("id")
-				.where({ id: profile.id })
+				.where({ google_id: profile.id })
 				.then((user) => {
 					if (user.length) {
 						// If user is found, pass the user object to serialize function
@@ -101,8 +101,12 @@ passport.use(
 								//TODO: will need to change this to google?
 								// github_id: profile.id,
 								// avatar_url: profile._json.avatar_url,
+								google_id: profile.id,
 								first_name: profile.name.givenName,
 								last_name: profile.name.familyName,
+								email: profile.emails[0].value,
+								profile_image: profile.photos[0].value,
+
 								//TODO: take this out and adjust in database
 								is_public: false,
 							})
