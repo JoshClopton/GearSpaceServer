@@ -11,8 +11,9 @@ const knex = require("knex")(require("../knexfile.js").development);
 
 // module.exports = router;
 
-router.get("/", (req, res) => {
+router.get(`/:shelfId`, (req, res) => {
 	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
+	console.log("🕵🏻‍♂️ req", req); //TODO: remove/comment
 
 	knex
 		.select("*")
