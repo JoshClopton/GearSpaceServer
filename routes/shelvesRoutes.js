@@ -13,12 +13,14 @@ const knex = require("knex")(require("../knexfile.js").development);
 
 router.get(`/:shelfId`, (req, res) => {
 	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
-	console.log("🕵🏻‍♂️ req", req); //TODO: remove/comment
+	console.log("🕵🏻‍♂️ req.params", req.params); //TODO: remove/comment
 
-	knex
-		.select("*")
-		.from("shelves")
+	knex("shelves")
+		.where("shelf", req.params.shelfId)
+
 		.then((data) => {
+			console.log("🕵🏻‍♂️ data: ", data); //TODO: remove/comment
+
 			res.status(200).json(data);
 		})
 		.catch((err) => {
