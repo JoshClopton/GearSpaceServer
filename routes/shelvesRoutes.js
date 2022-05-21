@@ -52,6 +52,7 @@ router.post("/", (req, res) => {
 			qty: req.body.qty,
 			location: req.body.location,
 			notes: req.body.notes,
+			image: req.body.image,
 		})
 		// .then((postId) => {
 		// 	// Send newly created postId as a response

@@ -20,7 +20,7 @@ exports.up = function (knex) {
 			table.string("location");
 			table.string("description");
 			table.string("notes");
-			table.binary("image");
+			table.string("image");
 
 			table.foreign("user").references("id").inTable("users");
 		})
