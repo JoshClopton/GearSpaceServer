@@ -15,8 +15,26 @@ router.get(`/:shelfId`, (req, res) => {
 	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
 	console.log("🕵🏻‍♂️ req.params", req.params); //TODO: remove/comment
 
-	knex("shelves")
-		.where("shelf", req.params.shelfId)
+	knex("")
+		.then((data) => {
+			console.log("🕵🏻‍♂️ data: ", data); //TODO: remove/comment
+
+			res.status(200).json(data);
+		})
+		.catch((err) => {
+			res.status(500).send("Error fetching shelves");
+		});
+});
+
+router.get(`/`, (req, res) => {
+	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
+	console.log("🕵🏻‍♂️ req.params", req.params); //TODO: remove/comment
+
+	knex
+		.column("shelf")
+		.select()
+		.from("shelves")
+		.where("user", req.user.id)
 
 		.then((data) => {
 			console.log("🕵🏻‍♂️ data: ", data); //TODO: remove/comment
