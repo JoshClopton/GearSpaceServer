@@ -12,16 +12,11 @@ const knex = require("knex")(require("../knexfile.js").development);
 // module.exports = router;
 
 router.get(`/:shelfId`, (req, res) => {
-	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
-	console.log("🕵🏻‍♂️ req.params", req.params); //TODO: remove/comment
-
 	knex("shelves")
 		.where("shelf", req.params.shelfId)
 		.where("user", req.user.id)
 
 		.then((data) => {
-			console.log("🕵🏻‍♂️ data: ", data); //TODO: remove/comment
-
 			res.status(200).json(data);
 		})
 		.catch((err) => {
@@ -30,9 +25,6 @@ router.get(`/:shelfId`, (req, res) => {
 });
 
 router.get(`/`, (req, res) => {
-	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
-	console.log("🕵🏻‍♂️ req.params", req.params); //TODO: remove/comment
-
 	knex
 		.column("shelf")
 		.select()
@@ -40,8 +32,6 @@ router.get(`/`, (req, res) => {
 		.where("user", req.user.id)
 
 		.then((data) => {
-			console.log("🕵🏻‍♂️ data: ", data); //TODO: remove/comment
-
 			res.status(200).json(data);
 		})
 		.catch((err) => {
@@ -51,9 +41,6 @@ router.get(`/`, (req, res) => {
 
 // Create a new post route
 router.post("/", (req, res) => {
-	console.log("🕵🏻‍♂️ POSTreq.user: ", req.user); //TODO: .remove/comment
-	console.log("🕵🏻‍♂️ req.body: ", req.body); //TODO: remove/comment
-
 	// If user is not logged in, we don't allow them to create a new post
 	if (req.user === undefined)
 		return res.status(401).json({ message: "Unauthorized" });
@@ -84,10 +71,24 @@ router.post("/", (req, res) => {
 		});
 });
 
-router.put("/edit", (req, res) => {
-	console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
-	console.log("🕵🏻‍♂️ req.body: ", req.body); //TODO: remove/comment
+router.delete("/delete", (req, res) => {
+	console.log(">>>>>>>> 🕵🏻‍♂️ req.body: ", req.body.id); //TODO: remove/comment
+	console.log("🕵🏻‍♂️ req.user.id: ", req.user.id); //TODO: remove/comment
+	//TODO: remove/comment
 
+	knex("shelves")
+		.where("user", req.user.id)
+		.where("id", req.body.id)
+		.del()
+		.then((data) => {
+			res.sendStatus(204);
+		})
+		.catch(() => {
+			res.status(500).json({ message: "Error deleting shelf item" });
+		});
+});
+
+router.patch("/edit", (req, res) => {
 	knex("shelves")
 		.where("user", req.user.id)
 		.where("id", req.body.item)
@@ -96,10 +97,9 @@ router.put("/edit", (req, res) => {
 			qty: req.body.qty,
 			notes: req.body.notes,
 			location: req.body.location,
+			shelf: req.body.shelf,
 		})
 		.then((data) => {
-			console.log("🕵🏻‍♂️ data: ", data); //TODO: remove/comment
-
 			res.status(200).json(data);
 		})
 		.catch((err) => {
