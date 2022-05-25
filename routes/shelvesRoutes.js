@@ -63,7 +63,7 @@ router.post("/", (req, res) => {
 			image: req.body.image,
 		})
 		.then((postId) => {
-			// Send newly created postId as a response
+			// Send newly created pdostId as a response
 			res.status(201).json({ newPostId: postId[0] });
 		})
 		.catch(() => {
