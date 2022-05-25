@@ -55,27 +55,23 @@ router.post("/", (req, res) => {
 		.insert({
 			user: req.user.id,
 			item: req.body.item,
-			description: req.body.description,
+			// description: req.body.description,
 			shelf: req.body.shelf,
 			qty: req.body.qty,
 			location: req.body.location,
 			notes: req.body.notes,
 			image: req.body.image,
 		})
-		// .then((postId) => {
-		// 	// Send newly created postId as a response
-		// 	res.status(201).json({ newPostId: postId[0] });
-		// })
+		.then((postId) => {
+			// Send newly created postId as a response
+			res.status(201).json({ newPostId: postId[0] });
+		})
 		.catch(() => {
 			res.status(500).json({ message: "Error creating a new post" });
 		});
 });
 
 router.delete("/delete", (req, res) => {
-	console.log(">>>>>>>> 🕵🏻‍♂️ req.body: ", req.body.id); //TODO: remove/comment
-	console.log("🕵🏻‍♂️ req.user.id: ", req.user.id); //TODO: remove/comment
-	//TODO: remove/comment
-
 	knex("shelves")
 		.where("user", req.user.id)
 		.where("id", req.body.id)
@@ -93,13 +89,15 @@ router.patch("/edit", (req, res) => {
 		.where("user", req.user.id)
 		.where("id", req.body.item)
 		.update({
-			description: req.body.description,
+			// description: req.body.description,
 			qty: req.body.qty,
 			notes: req.body.notes,
 			location: req.body.location,
 			shelf: req.body.shelf,
 		})
 		.then((data) => {
+			console.log("🕵🏻‍♂️ data from patch: ", data); //TODO: remove/comment
+
 			res.status(200).json(data);
 		})
 		.catch((err) => {

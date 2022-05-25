@@ -18,7 +18,6 @@ exports.up = function (knex) {
 			table.string("shelf");
 			table.integer("qty");
 			table.string("location");
-			table.string("description");
 			table.string("notes");
 			table.string("image");
 
