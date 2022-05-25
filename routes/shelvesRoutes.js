@@ -1,15 +1,7 @@
 const express = require("express");
-// const { default: knex } = require("knex");
 const router = express.Router();
 require("dotenv").config();
 const knex = require("knex")(require("../knexfile.js").development);
-
-// const shelfController = require("../controller/shelfController");
-
-// router.route("/").get(shelfController.index);
-// router.route("/:shelfId").get(shelfController.index);
-
-// module.exports = router;
 
 router.get(`/:shelfId`, (req, res) => {
 	knex("shelves")
@@ -23,7 +15,7 @@ router.get(`/:shelfId`, (req, res) => {
 			res.status(500).send("Error fetching shelves");
 		});
 });
-
+//Grab the users shelves from the database
 router.get(`/`, (req, res) => {
 	knex
 		.column("shelf")
@@ -44,18 +36,11 @@ router.post("/", (req, res) => {
 	// If user is not logged in, we don't allow them to create a new post
 	if (req.user === undefined)
 		return res.status(401).json({ message: "Unauthorized" });
-
-	// // Validate request body for required fields
-	// if (!req.body.title || !req.body.content) {
-	//   return res.status(400).json({ message: 'Missing post title or content fields' });
-	// }
-
 	// Insert new post into DB: user_id comes from session, title and content from a request body
 	knex("shelves")
 		.insert({
 			user: req.user.id,
 			item: req.body.item,
-			// description: req.body.description,
 			shelf: req.body.shelf,
 			qty: req.body.qty,
 			location: req.body.location,
@@ -70,7 +55,7 @@ router.post("/", (req, res) => {
 			res.status(500).json({ message: "Error creating a new post" });
 		});
 });
-
+//Route to delete items in a shelf
 router.delete("/delete", (req, res) => {
 	knex("shelves")
 		.where("user", req.user.id)
@@ -89,7 +74,6 @@ router.patch("/edit", (req, res) => {
 		.where("user", req.user.id)
 		.where("id", req.body.item)
 		.update({
-			// description: req.body.description,
 			qty: req.body.qty,
 			notes: req.body.notes,
 			location: req.body.location,
