@@ -80,8 +80,6 @@ router.patch("/edit", (req, res) => {
 			shelf: req.body.shelf,
 		})
 		.then((data) => {
-			console.log("🕵🏻‍♂️ data from patch: ", data); //TODO: remove/comment
-
 			res.status(200).json(data);
 		})
 		.catch((err) => {
