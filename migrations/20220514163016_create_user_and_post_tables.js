@@ -14,7 +14,6 @@ exports.up = function (knex) {
 			table.increments("id").primary();
 			table.integer("user").unsigned().notNullable();
 			table.string("item").notNullable();
-			//TODO: Should this be choice?
 			table.string("shelf");
 			table.integer("qty");
 			table.string("location");
@@ -29,7 +28,6 @@ exports.up = function (knex) {
 
 			table.integer("commenter_id").unsigned().notNullable();
 			table.timestamp("created_at").defaultTo(knex.fn.now());
-			//TODO: what is diff between string and text
 			table.string("comment").notNullable();
 			table.foreign("shelf_id").references("id").inTable("shelves");
 			table.foreign("commenter_id").references("id").inTable("users");
@@ -37,10 +35,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-	return (
-		knex.schema
-			// .dropTable("comments")
-			.dropTable("shelves")
-			.dropTable("users")
-	);
+	return knex.schema.dropTable("shelves").dropTable("users");
 };

@@ -1,4 +1,3 @@
-//this is the index js file i'm creating that goes along with the codealong. Gonna try to compare this to the index.js and delet one of the files
 // Create Express app and also allow for app PORT to be optionally specified by an environment variable
 const express = require("express");
 // Middleware for creating a session id on server and a session cookie on client
@@ -65,8 +64,6 @@ app.use(passport.initialize());
 // Additional information: https://stackoverflow.com/questions/22052258/what-does-passport-session-middleware-do
 app.use(passport.session());
 
-// Initialize GitHub strategy middleware
-// http://www.passportjs.org/packages/passport-github2/
 // We can add multiple strategies with `passport.use` syntax
 passport.use(
 	new GoogleStrategy(
@@ -75,45 +72,35 @@ passport.use(
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 			callbackURL: process.env.GOOGLE_CALLBACK_URL,
 			scope: ["profile"],
-			// passReqToCallback: true,
-			// userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
 		},
 		//Second argument is a callback function
 		(_accessToken, _refreshToken, profile, done) => {
 			// For our implementation we don't need access or refresh tokens.
-			// Profile parameter will be the profile object we get back from GitHub
+			// Profile parameter will be the profile object we get back from Google
 			console.log("Google profile:", profile);
 
-			// First let's check if we already have this user in our DB
+			// Check if we already have this user in our DB
 			knex("users")
 				.select("id")
 				.where({ google_id: profile.id })
 				.then((user) => {
 					if (user.length) {
 						// If user is found, pass the user object to serialize function
-						console.log("🕵🏻‍♂️ user found: "); //TODO: remove/comment
 
 						return done(null, user[0]);
 					} else {
 						// If user isn't found, we create a record
 						knex("users")
 							.insert({
-								//TODO: will need to change this to google?
-								// github_id: profile.id,
-								// avatar_url: profile._json.avatar_url,
 								google_id: profile.id,
 								first_name: profile.name.givenName,
 								last_name: profile.name.familyName,
 								email: profile.emails[0].value,
 								profile_image: profile.photos[0].value,
-
-								//TODO: take this out and adjust in database
 								is_public: false,
 							})
 							.then((userId) => {
 								// Pass the user object to serialize function
-								console.log("🕵🏻‍♂️ user created: "); //TODO: remove/comment
-
 								return done(null, { id: userId[0] });
 							})
 							.catch((err) => {
@@ -147,7 +134,7 @@ passport.deserializeUser((userId, done) => {
 	knex("users")
 		.where({ id: userId })
 		.then((user) => {
-			// Remember that knex will return an array of records, so we need to get a single record from it
+			// Knex will return an array of records, so we need to get a single record from it
 			console.log("req.user:", user[0]);
 
 			// The full user object will be attached to request object as `req.user`
