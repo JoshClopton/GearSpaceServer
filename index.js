@@ -77,7 +77,6 @@ passport.use(
 		(_accessToken, _refreshToken, profile, done) => {
 			// For our implementation we don't need access or refresh tokens.
 			// Profile parameter will be the profile object we get back from Google
-			console.log("Google profile:", profile);
 
 			// Check if we already have this user in our DB
 			knex("users")
@@ -119,8 +118,6 @@ passport.use(
 // The data comes from `done` function of the strategy
 // The result of the method is attached to the session as `req.session.passport.user = 12345`
 passport.serializeUser((user, done) => {
-	console.log("serializeUser (user object):", user);
-
 	// Store only the user id in session
 	done(null, user.id);
 });
@@ -128,15 +125,10 @@ passport.serializeUser((user, done) => {
 // `deserializeUser` receives a value sent from `serializeUser` `done` function
 // We can then retrieve full user information from our database using the userId
 passport.deserializeUser((userId, done) => {
-	console.log("deserializeUser (user id):", userId);
-
 	// Query user information from the database for currently authenticated user
 	knex("users")
 		.where({ id: userId })
 		.then((user) => {
-			// Knex will return an array of records, so we need to get a single record from it
-			console.log("req.user:", user[0]);
-
 			// The full user object will be attached to request object as `req.user`
 			done(null, user[0]);
 		})
@@ -149,9 +141,6 @@ passport.deserializeUser((userId, done) => {
 // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 
 // =========================================
-
-//set up shelves end point and point to the routes folder
-// app.use("/", shelvesRoutes);
 
 //set up
 // app.use("/:shelfId", shelvesRoutes);
