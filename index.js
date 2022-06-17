@@ -16,7 +16,7 @@ const cookieParser = require("cookie-parser");
 
 // // Create Express app and also allow for app PORT to be optionally specified by an environment variable
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.NODE_ENV || 8000;
 
 //routes
 // const shelvesRoutes = require("./routes/shelvesRoutes");
