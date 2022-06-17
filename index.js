@@ -10,7 +10,7 @@ const helmet = require("helmet");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 // Knex instance
-const knex = require("knex")(require("./knexfile.js").development);
+const knex = require("knex")(require("./knexfile.js"));
 
 const cookieParser = require("cookie-parser");
 
