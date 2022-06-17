@@ -18,7 +18,7 @@ router.get(
 		failureRedirect: `${process.env.CLIENT_URL}/auth-fail`,
 	}),
 	(req, res) => {
-		res.redirect(`${process.env.CLIENT_URL}`);
+		res.redirect("https://gear-space-client.herokuapp.com/shelves");
 	}
 );
 
