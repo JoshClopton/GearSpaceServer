@@ -70,8 +70,7 @@ passport.use(
 		{
 			clientID: process.env.GOOGLE_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-			callbackURL:
-				"https://gear-space-client.herokuapp.com/auth/google/redirect",
+			callbackURL: "https://gear-space.herokuapp.com/auth/google/redirect",
 			scope: ["profile"],
 		},
 		//Second argument is a callback function
