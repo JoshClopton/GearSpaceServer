@@ -26,8 +26,6 @@ router.get(
 
 // User profile endpoint that requires authentication
 router.get("/profile", (req, res) => {
-  console.log("🕵🏻‍♂️ req.user: ", req.user); //TODO: remove/comment
-
   // Passport stores authenticated user information on `req.user` object.
   // Comes from done function of `deserializeUser`
 
