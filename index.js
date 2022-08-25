@@ -66,17 +66,17 @@ app.use(passport.session());
 
 // We can add multiple strategies with `passport.use` syntax
 passport.use(
-	new GoogleStrategy(
-		{
-			clientID: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-			callbackURL: process.env.GOOGLE_CALLBACK_URL,
-			scope: ["profile"],
-		},
-		//Second argument is a callback function
-		(_accessToken, _refreshToken, profile, done) => {
-			// For our implementation we don't need access or refresh tokens.
-			// Profile parameter will be the profile object we get back from Google
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      scope: ["profile"],
+    },
+    //Second argument is a callback function
+    (_accessToken, _refreshToken, profile, done) => {
+      // For our implementation we don't need access or refresh tokens.
+      // Profile parameter will be the profile object we get back from Google
 
       // Check if we already have this user in our DB
       knex("users")
@@ -112,7 +112,6 @@ passport.use(
         });
     }
   )
->>>>>>> develop
 );
 
 // `serializeUser` determines which data of the auth user object should be stored in the session
